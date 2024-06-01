@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= @user.full_name %>'s Profile</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-4">
+
+    <!-- Profile Header -->
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+      <div class="flex items-center p-6">
+        <div class="w-24 h-24 bg-gray-200 rounded-full overflow-hidden">
+          <!-- Placeholder for user avatar -->
+          <img src="https://via.placeholder.com/150" alt="User Avatar" class="w-full h-full object-cover">
+        </div>
+        <div class="ml-4">
+          <h1 class="text-2xl font-bold text-gray-800"><%= @user.full_name %></h1>
+          <p class="text-gray-600">NTRP Rating: <%= @user.ntrp_ranking %></p>
+        </div>
+        <div class="ml-auto">
+          <%= link_to 'Back to Dashboard', root_path, class: 'text-blue-500 hover:underline' %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Details -->
+    <div class="bg-white shadow-md rounded-lg mt-6 p-6">
+      <h2 class="text-xl font-semibold mb-4">Profile Details</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-gray-50 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-bold mb-2">First Name</h3>
+          <p class="text-gray-600"><%= @user.first_name %></p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-bold mb-2">Last Name</h3>
+          <p class="text-gray-600"><%= @user.last_name %></p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-bold mb-2">Email</h3>
+          <p class="text-gray-600"><%= @user.email %></p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-bold mb-2">NTRP Rating</h3>
+          <p class="text-gray-600"><%= @user.ntrp_ranking %></p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-bold mb-2">Joined</h3>
+          <p class="text-gray-600"><%= @user.created_at.strftime("%B %d, %Y") %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Send Match Invite -->
+    <div class="bg-white shadow-md rounded-lg mt-6 p-6">
+      <h2 class="text-xl font-semibold mb-4">Send Match Invite</h2>
+      <%= form_with model: MatchInvite.new, url: match_invites_path, method: :post do |f| %>
+        <div class="mb-4">
+          <%= f.hidden_field :recipient_id, value: @user.id %>
+          <%= f.label :match_date, class: 'block text-gray-700' %>
+          <%= f.date_field :match_date, class: 'mt-1 block w-full' %>
+        </div>
+        <%= f.submit "Send Invite", class: "bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" %>
+      <% end %>
+    </div>
+
+  </div>
+</body>
+</html>

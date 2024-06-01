@@ -1,0 +1,35 @@
+<% content_for :title, "Match Invites" %>
+
+<h1 class="text-2xl font-bold text-gray-700">Your Match Invites</h1>
+<%= link_to 'Back to Homepage', root_path, class: 'text-blue-500 hover:underline' %>
+
+<div class="bg-white shadow-md rounded-lg mt-6 p-6">
+  <h2 class="text-xl font-semibold mb-4">Sent Invites</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% @sent_invites.each do |invite| %>
+      <div class="bg-gray-50 p-4 rounded-lg shadow">
+        <h3 class="text-lg font-bold mb-2">To: <%= invite.recipient.full_name %></h3>
+        <p class="text-gray-600">Match Date: <%= invite.match_date %></p>
+        <p class="text-gray-600">Status: <%= invite.status %></p>
+        <p class="text-gray-600">Sent On: <%= invite.created_at.strftime("%B %d, %Y") %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="bg-white shadow-md rounded-lg mt-6 p-6">
+  <h2 class="text-xl font-semibold mb-4">Received Invites</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% @received_invites.each do |invite| %>
+      <div class="bg-gray-50 p-4 rounded-lg shadow">
+        <h3 class="text-lg font-bold mb-2">From: <%= invite.sender.full_name %></h3>
+        <p class="text-gray-600">Match Date: <%= invite.match_date %></p>
+        <p class="text-gray-600">Status: <%= invite.status %></p>
+        <p class="text-gray-600">Received On: <%= invite.created_at.strftime("%B %d, %Y") %></p>
+        <% if invite.status == 'pending' %>
+          <%= button_to 'Accept Invite', accept_match_invite_path(invite), method: :patch, class: "mt-2 inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

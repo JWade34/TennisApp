@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_01_155623) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_01_172307) do
   create_table "locations", force: :cascade do |t|
     t.integer "user_id", null: false
     t.float "latitude"
@@ -18,6 +18,25 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_01_155623) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_locations_on_user_id"
+  end
+
+  create_table "match_invites", force: :cascade do |t|
+    t.integer "sender_id"
+    t.integer "recipient_id"
+    t.string "status"
+    t.date "match_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "matches", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "opponent_name"
+    t.date "date"
+    t.string "result"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_matches_on_user_id"
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -40,10 +59,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_01_155623) do
     t.datetime "updated_at", null: false
     t.float "ntrp_ranking"
     t.string "location"
+    t.string "first_name"
+    t.string "last_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "locations", "users"
+  add_foreign_key "matches", "users"
   add_foreign_key "subscriptions", "users"
 end
