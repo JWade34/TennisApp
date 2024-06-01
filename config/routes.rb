@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'users/index'
   get 'match_invites/create'
   get 'match_invites/index'
   get 'profiles/show'

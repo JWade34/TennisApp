@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Active Users</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold text-gray-700">Active Users</h1>
+    <%= link_to 'Back to Homepage', root_path, class: 'text-blue-500 hover:underline' %>
+
+    <div class="bg-white shadow-md rounded-lg mt-6 p-6">
+      <h2 class="text-xl font-semibold mb-4">Select a User to Send a Match Invite</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% @users.each do |user| %>
+          <div class="bg-gray-50 p-4 rounded-lg shadow">
+            <h3 class="text-lg font-bold mb-2"><%= user.full_name %></h3>
+            <p class="text-gray-600">NTRP Rating: <%= user.ntrp_ranking %></p>
+            <%= link_to 'Send Match Invite', new_match_invite_path(recipient_id: user.id), class: 'mt-2 inline-block text-blue-500 hover:underline' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

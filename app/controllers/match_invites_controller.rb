@@ -3,6 +3,7 @@ class MatchInvitesController < ApplicationController
 
   def new
     @match_invite = MatchInvite.new(recipient_id: params[:recipient_id])
+    @recipient = User.find(params[:recipient_id]) if params[:recipient_id].present?
   end
 
   def create
@@ -24,11 +25,10 @@ class MatchInvitesController < ApplicationController
 
   def accept
     @match_invite = MatchInvite.find(params[:id])
-    if @match_invite.recipient == current_user
-      @match_invite.update(status: 'accepted')
+    if @match_invite.recipient == current_user && @match_invite.update(status: 'accepted')
       flash[:notice] = 'Match invite accepted!'
     else
-      flash[:alert] = 'You are not authorized to accept this invite.'
+      flash[:alert] = 'Failed to accept match invite.'
     end
     redirect_to match_invites_path
   end
